@@ -1,35 +1,35 @@
-const gameBoard = document.querySelector("#gameBoard");
-const contextGame = gameBoard.getContext("2d");
-const scoreText = document.querySelector("#scoreText");
-const resetBtn = document.querySelector("#resetBtn");
+const gameBoard: HTMLCanvasElement = document.querySelector("#gameBoard")!;
+const contextGame: CanvasRenderingContext2D = gameBoard.getContext("2d")!;
+const scoreText: HTMLDivElement = document.querySelector("#scoreText")!;
+const resetBtn: HTMLButtonElement = document.querySelector("#resetBtn")!;
 
-const widthGame = gameBoard.width;
-const heightGame = gameBoard.height;
-const unitSize = 25;
-const ballRadius = 12.5;
-const playersSpeed = 50;
-const boardBackground = "green";
-const ballColor = "yellow";
-const playerColor1 = "blue";
-const playerColor2 = "red";
-const playerBorderColor = "black";
-const ballBorderColor = "black";
-let yVelocity = playersSpeed;
-let intervalID;
-let playerScore1 = 0;
-let playerScore2 = 0;
-let ballX;
-let ballY;
-let ballXDirection;
-let ballYDirection;
-let ballSpeed;
-let player1 = {
+const widthGame: number = gameBoard.width;
+const heightGame: number = gameBoard.height;
+const unitSize: number = 25;
+const ballRadius: number = 12.5;
+const playersSpeed: number = 50;
+const boardBackground: string = "green";
+const ballColor: string = "yellow";
+const playerColor1: string = "blue";
+const playerColor2: string = "red";
+const playerBorderColor: string = "black";
+const ballBorderColor: string = "black";
+let yVelocity: number = playersSpeed;
+let intervalID: number;
+let playerScore1: number = 0;
+let playerScore2: number = 0;
+let ballX: number;
+let ballY: number;
+let ballXDirection: number;
+let ballYDirection: number;
+let ballSpeed: number;
+let player1: {x: number, y: number, width: number, height: number} = {
     x: 0,
     y: 0,
     width: 25,
     height: 100
 }
-let player2 = {
+let player2: {x: number, y: number, width: number, height: number} = {
     x: widthGame - unitSize,
     y: heightGame - 100,
     width: 25,
@@ -41,14 +41,14 @@ resetBtn.addEventListener("click", restartGame);
 startGame();
 
 // Clears the canvas and paints the game board with the specified background color.
-function paintingBoard(){
+function paintingBoard(): void {
     contextGame.fillStyle = boardBackground;
     contextGame.fillRect(0, 0, widthGame, heightGame);
 }
 
 // Draws the ball on the canvas at the specified coordinates (ballX, ballY) with the specified radius,
 // fill color, and border color.
-function drawBall(ballX, ballY){
+function drawBall(ballX: number, ballY: number): void {
     contextGame.fillStyle = ballColor;
     contextGame.strokeStyle = ballBorderColor;
     contextGame.lineWidth = 2;
@@ -71,29 +71,25 @@ function drawPlayers(){
 
 // Handles player movement based on keyboard input. It changes the Y-coordinate of the players' position when specific
 // keys are pressed. If the player has arrived at the border of the game board, then pressing the button does nothing.
-function changeDirection(event){
-    let keyPressed = event.keyCode;
-    const player1_UP = 87;  // W
-    const player1_DOWN = 83;    // S
-    const player2_UP = 38;  // Arrow key Up
-    const player2_DOWN = 40;    // Arrow key Down
+function changeDirection(event: KeyboardEvent){
+    let keyPressed: string = event.code;
     switch(keyPressed){
-        case(player1_UP):
+        case('KeyW'):
             if(player1.y > 0){
                 player1.y -= yVelocity;
             }
             break;
-        case(player1_DOWN):
+        case('KeyS'):
             if(player1.y < heightGame - player1.height){
                 player1.y += yVelocity;
             }
             break;
-        case(player2_UP):
+        case('ArrowUp'):
             if(player2.y > 0){
                 player2.y -= yVelocity;
             }
             break;
-        case(player2_DOWN):
+        case('ArrowDown'):
             if(player2.y < heightGame - player2.height){
                 player2.y += yVelocity;
             }
@@ -103,7 +99,7 @@ function changeDirection(event){
 
 // Initiates the game loop. It clears the canvas, draws the game elements, moves the ball, checks for collisions,
 // and schedules the next frame using setTimeout.
-function nextTick(){
+function nextTick(): void {
     intervalID = setTimeout(() => {
         paintingBoard();
         drawPlayers();
@@ -116,7 +112,7 @@ function nextTick(){
 
 // Initializes the ball's position, direction, and speed. Randomly sets the initial direction of the ball
 // (left/right and up/down) and places it at the center of the canvas.
-function createBall(){
+function createBall(): void {
     ballSpeed = 1;
     if(Math.round(Math.random() * ballSpeed) === 1){
         ballXDirection = 1;
@@ -136,20 +132,20 @@ function createBall(){
 }
 
 // Updates the ball's position based on its current direction and speed.
-function moveBall(){
+function moveBall(): void {
     ballX += (ballXDirection * ballSpeed);
     ballY += (ballYDirection * ballSpeed);
 }
 
 // Initializes the game by creating the ball and starting the game loop.
-function startGame(){
+function startGame(): void {
     createBall();
     nextTick();
 }
 
 // Resets player scores, positions, and ball properties to their initial values.
 // It then updates the displayed score and restarts the game.
-function restartGame(){
+function restartGame(): void {
     playerScore1 = 0;
     playerScore2 = 0;
     player1 = {
@@ -175,14 +171,14 @@ function restartGame(){
 }
 
 // Updates the text content of the score display element with the current scores of the players.
-function updateScore(){
+function updateScore(): void {
     scoreText.textContent = `${playerScore1} : ${playerScore2}`;
 }
 
 // Checks for collisions between the ball and the game borders or players. If a collision occurs, it updates the ball's
 // direction and speed accordingly. Also handles scoring when the ball crosses the left or right boundaries.
 //
-function checkCollision(){
+function checkCollision(): void {
     if(ballY <= (0 + ballRadius)){      // collision with the top border
         ballYDirection *= -1;
     }
