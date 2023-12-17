@@ -23,13 +23,14 @@ let ballY: number;
 let ballXDirection: number;
 let ballYDirection: number;
 let ballSpeed: number;
-let player1: {x: number, y: number, width: number, height: number} = {
+type playerObj = {x: number, y: number, width: number, height: number};
+let player1: playerObj = {
     x: 0,
     y: 0,
     width: 25,
     height: 100
 }
-let player2: {x: number, y: number, width: number, height: number} = {
+let player2: playerObj = {
     x: widthGame - unitSize,
     y: heightGame - 100,
     width: 25,
