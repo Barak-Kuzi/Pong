@@ -11,3 +11,6 @@ Technologies:
 - TypeScript
 - HTML
 - CSS
+
+## About
+The project was converted from JavaScript to TypeScript
